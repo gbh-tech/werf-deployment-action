@@ -57,7 +57,7 @@ See [action.yml](action.yml).
   with:
     environment: 'stage'
     aws_region: 'us-east-1'
-    ansible_vault_password: '${{ secrets.WERF_SECRET_KEY }}'
+    werf_secret_key: '${{ secrets.WERF_SECRET_KEY }}'
     aws_access_key_id: '${{ vars.AWS_ACCESS_KEY_ID }}'
     aws_secret_access_key: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
     tasks: >-
