@@ -11,7 +11,6 @@ inputs:
     required: true
   aws_region:
     description: 'AWS Region'
-    default: 'us-east-1'
     required: true
   aws_access_key_id:
     description: 'AWS Access Key from Service Account'
@@ -45,10 +44,10 @@ runs:
       run: echo "${{ inputs.werf_secret_key }}" > .werf_secret_key
 
     - name: Install kubectl
-      uses: azure/setup-kubectl@v3
+      uses: azure/setup-kubectl@v4
 
     - name: Install Task
-      uses: arduino/setup-task@v1
+      uses: arduino/setup-task@v2
       with:
         version: '3.x'
 
