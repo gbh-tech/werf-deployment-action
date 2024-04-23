@@ -18,7 +18,7 @@ It provides options to configure Werf, AWS regions, run modes, and secrets for s
 See [action.yml](action.yml).
 
 ``` yaml
-- uses: actions/werf-deployment-action@v0.0.1
+- uses: actions/werf-deployment-action@v0.0.2
   with:
     # Target environment to pass to tasks and Werf commands
     environment: 'stage'
@@ -53,7 +53,7 @@ See [action.yml](action.yml).
 ### Example usage
 
 ```yaml
-- uses: gbh-tech/werf-deployment-action@v0.0.1
+- uses: gbh-tech/werf-deployment-action@v0.0.2
   with:
     environment: 'stage'
     aws_region: 'us-east-1'
