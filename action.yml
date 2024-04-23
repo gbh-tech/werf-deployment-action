@@ -23,10 +23,8 @@ inputs:
     required: true
   tasks:
     description: 'Tasks to run'
-    required: true
   commands:
     description: 'Werf commands to run'
-    required: true
 
 runs:
   using: 'composite'
