@@ -1,0 +1,28 @@
+name: 🚢 Deployment Action Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  ANSIBLE_FORCE_COLOR: '1'
+  PY_COLORS: '1'
+  FORCE_COLOR: '1'
+
+jobs:
+  deployment_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 💻 Checkout current pull-request revision code
+        uses: actions/checkout@v4
+
+      - name: 🚀 Test Deployment Action
+        uses: ./
+        with:
+          dry_run: true
+          playbook_name: 'stage'
+          ansible_tags: >-
+            auth,
+            env-vars,
+            info

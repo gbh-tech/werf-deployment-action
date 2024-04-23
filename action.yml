@@ -1,0 +1,84 @@
+name: 'Werf Deployment Action'
+description: 'Configures base runner with Taskfile, kubectl, werf, and runs Werf commands and Tasks.'
+author: 'gbh-tech'
+branding:
+  icon: 'book'
+  color: 'blue'
+
+inputs:
+  werf_secret_key:
+    description: 'Werf secret key value'
+    required: true
+  aws_region:
+    description: 'AWS Region'
+    default: 'us-east-1'
+    required: true
+  aws_access_key_id:
+    description: 'AWS Access Key from Service Account'
+    required: true
+  aws_secret_access_key:
+    description: 'AWS service account secret access key'
+    required: true
+  environment:
+    description: 'Target environment'
+    required: true
+  tasks:
+    description: 'Tasks to run'
+    required: true
+  commands:
+    description: 'Werf commands to run'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Configure AWS service account credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: ${{ inputs.aws_region }}
+        aws-access-key-id: ${{ inputs.aws_access_key_id }}
+        aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+
+    - name: Add Werf secret key
+      shell: bash -leo pipefail {0}
+      if: ${{ inputs.werf_secret_key != '' }}
+      run: echo "${{ inputs.werf_secret_key }}" > .werf_secret_key
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Install Task
+      uses: arduino/setup-task@v1
+      with:
+        version: '3.x'
+
+    - name: Install Werf
+      uses: werf/actions/install@v1.2
+
+    - name: Running tasks defined in Taskfile
+      if: ${{ inputs.tasks != '' }}
+      shell: bash -leo pipefail {0}
+      run: |
+        tasks="${{ inputs.tasks }}"
+
+        # Set the IFS to comma (,) to split the string based on comma
+        IFS=','
+
+        read -ra array <<< "$tasks"
+        for task in ${array[@]}; do
+          task $task -- ${{ inputs.environment }}
+        done
+
+    - name: Running Werf commands
+      if: ${{ inputs.commands != '' }}
+      shell: bash -leo pipefail {0}
+      run: |
+        commands="${{ inputs.commands }}"
+
+        # Set the IFS to comma (,) to split the string based on comma
+        IFS=','
+
+        read -ra array <<< "$commands"
+        for command in ${array[@]}; do
+          werf $command --env ${{ inputs.environment }}
+        done
