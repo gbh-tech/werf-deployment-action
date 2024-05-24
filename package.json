@@ -1,5 +1,5 @@
 {
-  "name": "gbh-terraform",
+  "name": "werf-deployment-action",
   "version": "2.0.2",
   "scripts": {
     "prepare": "husky"
