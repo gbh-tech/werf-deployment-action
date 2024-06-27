@@ -50,7 +50,7 @@ runs:
         version: '3.x'
 
     - name: Install Werf
-      uses: werf/actions/install@v1.2
+      uses: werf/actions/install@v2
 
     - name: Running tasks defined in Taskfile
       if: ${{ inputs.tasks != '' }}
