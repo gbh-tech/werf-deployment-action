@@ -30,10 +30,10 @@ inputs:
     default: 'v1.34.0'
   task_version:
     description: 'Task version to install'
-    default: '3.43.2'
+    default: 'v3.43.2'
   werf_version:
     description: 'Werf version to install'
-    default: '2.53.0'
+    default: 'v2.53.0'
 
 runs:
   using: 'composite'
