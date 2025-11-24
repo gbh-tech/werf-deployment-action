@@ -30,7 +30,7 @@ inputs:
     default: 'v1.34.0'
   task_version:
     description: 'Task version to install'
-    default: 'v3.43.2'
+    default: '3.43.2'
   werf_version:
     description: 'Werf version to install'
     default: 'v2.53.0'
