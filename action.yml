@@ -33,7 +33,7 @@ inputs:
     default: '3.43.2'
   werf_version:
     description: 'Werf version to install'
-    default: '2.54.0'
+    default: '2.53.0'
 
 runs:
   using: 'composite'
