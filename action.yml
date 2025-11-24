@@ -25,6 +25,15 @@ inputs:
     description: 'Tasks to run'
   commands:
     description: 'Werf commands to run'
+  kubectl_version:
+    description: 'kubectl version to install'
+    default: '1.34.0'
+  task_version:
+    description: 'Task version to install'
+    default: '3.43.2'
+  werf_version:
+    description: 'Werf version to install'
+    default: '2.53.0'
 
 runs:
   using: 'composite'
@@ -43,14 +52,18 @@ runs:
 
     - name: Install kubectl
       uses: azure/setup-kubectl@v4
+      with:
+        version: ${{ inputs.kubectl_version }}
 
     - name: Install Task
       uses: arduino/setup-task@v2
       with:
-        version: '3.x'
+        version: ${{ inputs.task_version }}
 
     - name: Install Werf
       uses: werf/actions/install@v2
+      with:
+        version: ${{ inputs.werf_version }}
 
     - name: Running tasks defined in Taskfile
       if: ${{ inputs.tasks != '' }}
