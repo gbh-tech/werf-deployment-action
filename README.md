@@ -32,7 +32,7 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: gbh-tech/werf-deployment-action@v0.0.5
         with:
