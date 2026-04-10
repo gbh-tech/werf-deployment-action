@@ -12,12 +12,18 @@ inputs:
   aws_region:
     description: 'AWS Region'
     required: true
+  role_arn:
+    description: 'IAM role ARN to assume via OIDC. When set, OIDC authentication is used and static key inputs are ignored. Requires the calling workflow to declare permissions: id-token: write.'
+    default: ''
   aws_access_key_id:
-    description: 'AWS Access Key from Service Account'
-    required: true
+    description: 'AWS access key ID. Used only when role_arn is not set.'
+    default: ''
   aws_secret_access_key:
-    description: 'AWS service account secret access key'
-    required: true
+    description: 'AWS secret access key. Used only when role_arn is not set.'
+    default: ''
+  aws_session_token:
+    description: 'AWS session token for temporary STS credentials. Used only when role_arn is not set.'
+    default: ''
   environment:
     description: 'Target environment'
     required: true
@@ -38,12 +44,21 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Configure AWS service account credentials
-      uses: aws-actions/configure-aws-credentials@v4
+    - name: Configure AWS credentials (OIDC)
+      if: ${{ inputs.role_arn != '' }}
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        aws-region: ${{ inputs.aws_region }}
+        role-to-assume: ${{ inputs.role_arn }}
+
+    - name: Configure AWS credentials (static keys)
+      if: ${{ inputs.role_arn == '' }}
+      uses: aws-actions/configure-aws-credentials@v6
       with:
         aws-region: ${{ inputs.aws_region }}
         aws-access-key-id: ${{ inputs.aws_access_key_id }}
         aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+        aws-session-token: ${{ inputs.aws_session_token }}
 
     - name: Add Werf secret key
       shell: bash -leo pipefail {0}
